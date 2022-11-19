@@ -9,8 +9,10 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
     const session = search.get('session');
 
+    context.log("changes taking effect")
+
     context.res = await getAccessTokenFromSession(session);
-};
+}; 
 
 async function getAccessTokenFromSession(session: string){
     const { state_password } = settings;
@@ -23,6 +25,9 @@ async function getAccessTokenFromSession(session: string){
       body: {
         token: token
       },
+      headers: {
+        'Cache-Control': "private, max-age=600, s-maxage=600"
+      }
     };
 }
 
